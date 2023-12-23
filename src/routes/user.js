@@ -10,7 +10,6 @@ const main = require("../service/mail");
 
 
 router.post("/signup",async (req,res)=>{
-    // Zod Validation
     // Sign up logic from controllers
     const {name,email,password} = req.body;
     try {
@@ -19,19 +18,14 @@ router.post("/signup",async (req,res)=>{
             email,
             password
         });
-    
         if (!result.success) {
             throw new Error("Invalid user data");
         }
-    
         const exists = await existingUser(email, password);
-    
         if (exists) {
             throw new Error("User already exists");
         }
-    
         await createUser(name, email, password);
-    
         res.status(201).json({
             msg: "User Created"
         });
@@ -63,6 +57,7 @@ router.get("/login",async(req,res)=>{
 })
 
 router.get("/verify",async(req,res)=>{
+    // JWT Verify Logic from controller
     const data = await verifyToken(req.body.token);
     if(data)
     {
@@ -93,9 +88,9 @@ router.get("/allQuotes",async (req,res)=>{
 })
 
 router.get("/getQuote",async(req,res)=>{
+    // Quote of the day
     try {
         const quote = await quoteOfTheDay();
-        console.log(quote);
         res.status(201).json({
             "Quote of the Day" : quote,
         })

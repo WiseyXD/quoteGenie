@@ -14,7 +14,7 @@ async function createUser(name ,email ,password)
         email,
         password
     })
-    await user.save();
+    // await user.save();
 }
 
 async function existingUser(email ,password)

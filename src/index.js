@@ -4,10 +4,11 @@ const app = express();
 const PORT = 4000;
 const userRoutes = require("./routes/user");
 
-// Zod , bcrypt , star the quotes(Purchase Logic lagao)
+// bcrypt , star the quotes(Purchase Logic lagao)
 
 
 app.use(bodyParser.json());
+
 app.use("/user",userRoutes);
 
 app.listen(PORT,()=>{
