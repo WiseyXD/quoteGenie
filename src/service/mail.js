@@ -1,4 +1,5 @@
 "use strict";
+require('dotenv').config();
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
@@ -6,20 +7,20 @@ const transporter = nodemailer.createTransport({
     port: 587,
     auth: {
         // TODO: replace `user` and `pass` values from <https://forwardemail.net>
-        user: 'aryan.s.nag@gmail.com',
-        pass: 'WRk8rFB1MTJ49E25'
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD
     },
 });
 
 // async..await is not allowed in global scope, must use a wrapper
-async function main() {
+async function main(content,users) {
     // send mail with defined transport object
     const info = await transporter.sendMail({
         from: '"Aryan Nagbanshi 👻" <aryan@JS.com>', // sender address
-        to: "harshitamore16@gmail.com", // list of receivers
-        subject: "Hey Bot, Ari here", // Subject line
+        to: ["harshitamore16@gmail.com","aryan.s.nag@gmail"], // list of receivers
+        subject: "Test Array", // Subject line
         text: "Test", // plain text body
-        html: "<b>Hey Bot created something small but great</b>", // html body
+        html: "<b>Test Array</b>", // html body
     });
 
     console.log("Message sent: %s", info.messageId);
