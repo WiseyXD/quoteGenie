@@ -8,13 +8,13 @@ const PORT = process.env.PORT || 3000;
 const userRoutes = require("./routes/user");
 
 // bcrypt , star the quotes(Purchase Logic lagao)
-const apiUrl = "https://quotegenie.onrender.com/user/mail";
+const apiUrl = "https://quotegenie.onrender.com";
 
 app.use(bodyParser.json());
 
 app.use("/user", userRoutes);
 
-cron.schedule("*/10 * * * * *", async () => {
+cron.schedule("0 12 * * *", async () => {
     try {
         console.log("Cron job started...");
         const response = await axios.get(apiUrl);
