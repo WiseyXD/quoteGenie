@@ -1,9 +1,10 @@
+require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const cron = require("node-cron");
 const axios = require("axios");
 const app = express();
-const PORT = 4000;
+const PORT = process.env.PORT || 3000;
 const userRoutes = require("./routes/user");
 
 // bcrypt , star the quotes(Purchase Logic lagao)
