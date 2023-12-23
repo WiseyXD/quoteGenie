@@ -3,12 +3,15 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cron = require("node-cron");
 const axios = require("axios");
+const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const userRoutes = require("./routes/user");
 
 // bcrypt , star the quotes(Purchase Logic lagao)
 const apiUrl = "https://quotegenie.onrender.com";
+
+app.use(cors());
 
 app.use(bodyParser.json());
 
