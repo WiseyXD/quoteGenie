@@ -18,6 +18,19 @@ const UserSchema = mongoose.Schema({
     },
 })
 
+const quoteSchema = mongoose.Schema({
+    quote : {
+        type :String,
+        required :true,
+    },
+    author : {
+        type :String,
+        required :true,
+    }
+});
+
+
+const Quote = mongoose.model("Quote",quoteSchema);
 const User = mongoose.model("User" , UserSchema);
 
-module.exports = {User};
+module.exports = {User,Quote};

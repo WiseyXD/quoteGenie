@@ -3,6 +3,8 @@ const router = express.Router();
 
 const {createUser,loginUser, existingUser} = require("../controllers/user");
 const {createToken,verifyToken} = require("../service/auth");
+const {Quote} = require("../db/index");
+const quotesArray = require("../db/quotes");
 
 router.post("/signup",(req,res)=>{
     // Zod Validation
@@ -20,8 +22,6 @@ router.post("/signup",(req,res)=>{
             msg : "User Already Exists"
         })
     }
-
-
 })
 
 router.get("/login",async(req,res)=>{
@@ -56,6 +56,21 @@ router.get("/verify",async(req,res)=>{
     res.status(500).json({
         msg : "Verification error"
     })
+})
+
+router.post("/quote",async (req,res)=>{
+    // Add Quotes
+    try {
+        const result =await Quote.insertMany(quotesArray);
+        console.log(result.insertedCount);
+        res.status(201).json({
+            msg : "Quotes Created",
+        })
+    } catch (error) {
+        res.status(500).json({
+            msg : "Issues while Inserting"
+        })
+    }
 })
 
 
