@@ -17,10 +17,10 @@ async function main(content,users) {
     // send mail with defined transport object
     const info = await transporter.sendMail({
         from: '"Aryan Nagbanshi 👻" <aryan@JS.com>', // sender address
-        to: ["harshitamore16@gmail.com","aryan.s.nag@gmail"], // list of receivers
-        subject: "Test Array", // Subject line
-        text: "Test", // plain text body
-        html: "<b>Test Array</b>", // html body
+        to: users, // list of receivers
+        subject: "Quote Of the Day", // Subject line
+        // text: "Test", // plain text body
+        html: `<b>${content.quote}</b> <br/> <br/>~${content.author}`, // html body
     });
 
     console.log("Message sent: %s", info.messageId);
