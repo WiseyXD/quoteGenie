@@ -5,6 +5,7 @@ const {createUser,loginUser, existingUser} = require("../controllers/user");
 const {createToken,verifyToken} = require("../service/auth");
 const {Quote} = require("../db/index");
 const quotesArray = require("../db/quotes");
+const main = require("../service/mail")
 
 router.post("/signup",(req,res)=>{
     // Zod Validation
@@ -69,6 +70,32 @@ router.post("/quote",async (req,res)=>{
     } catch (error) {
         res.status(500).json({
             msg : "Issues while Inserting"
+        })
+    }
+})
+
+router.get("/getQuote",async(req,res)=>{
+    try {
+        const quotes = await Quote.find();
+        const quoteOfTheDay = quotes[Math.floor(Math.random()*quotes.length)];
+        console.log(quoteOfTheDay);
+        res.status(201).json({
+            msg : "Quote of the Day",
+        })
+    } catch (error) {
+        res.status(500).json({
+            msg : "Issues while getting Quote"
+        })
+    }
+})
+
+router.get("/mail",async(req,res)=>{
+    try {
+        await main().catch(console.error);
+        res.status(200).send("Check Email")
+    } catch (error) {
+        res.status(500).json({
+            msg : error
         })
     }
 })
