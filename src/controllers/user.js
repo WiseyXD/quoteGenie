@@ -1,4 +1,11 @@
 const {User} = require("../db/index");
+const z = require("zod");
+
+const zUser = z.object({
+    name : z.string().min(2 ,{message : "Must be 2 or more characters long"}),
+    email : z.string().email({message : "Invalid Email"}),
+    password : z.string().min(5,{message : "Password length must be 5 or more than 5 characters"})
+})
 
 async function createUser(name ,email ,password)
 {
@@ -20,4 +27,4 @@ async function existingUser(email ,password)
     return exists;
 }
 
-module.exports = {createUser,existingUser};
+module.exports = {createUser,existingUser,zUser};

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const {createUser,loginUser, existingUser} = require("../controllers/user");
+const {createUser,loginUser, existingUser,zUser} = require("../controllers/user");
 const {createToken,verifyToken} = require("../service/auth");
 const {Quote} = require("../db/index");
 const quotesArray = require("../db/quotes");
@@ -9,22 +9,39 @@ const {quoteOfTheDay,allUsers} = require("../controllers/mail")
 const main = require("../service/mail");
 
 
-router.post("/signup",(req,res)=>{
+router.post("/signup",async (req,res)=>{
     // Zod Validation
     // Sign up logic from controllers
     const {name,email,password} = req.body;
     try {
-        const exists = existingUser(email,password);
-        if(exists) throw new Error;
-        createUser(name,email,password);
+        const result = zUser.safeParse({
+            name,
+            email,
+            password
+        });
+    
+        if (!result.success) {
+            throw new Error("Invalid user data");
+        }
+    
+        const exists = await existingUser(email, password);
+    
+        if (exists) {
+            throw new Error("User already exists");
+        }
+    
+        await createUser(name, email, password);
+    
         res.status(201).json({
-            msg : "User Created"
-        })
+            msg: "User Created"
+        });
     } catch (error) {
+        console.error("Error in catch block:", error); // Log the error for debugging
         res.status(500).json({
-            msg : "User Already Exists"
-        })
+            msg: error.message
+        });
     }
+    
 })
 
 router.get("/login",async(req,res)=>{
@@ -40,7 +57,7 @@ router.get("/login",async(req,res)=>{
         })
     } catch (error) {
         res.status(500).json({
-            msg : error
+            msg : error.message
         })
     }
 })
@@ -61,13 +78,12 @@ router.get("/verify",async(req,res)=>{
     })
 })
 
-router.post("/quote",async (req,res)=>{
+router.get("/allQuotes",async (req,res)=>{
     // Add Quotes
     try {
-        const result =await Quote.insertMany(quotesArray);
-        console.log(result.insertedCount);
+        const allQuote =await Quote.find({});
         res.status(201).json({
-            msg : "Quotes Created",
+            allQuote
         })
     } catch (error) {
         res.status(500).json({
@@ -81,7 +97,7 @@ router.get("/getQuote",async(req,res)=>{
         const quote = await quoteOfTheDay();
         console.log(quote);
         res.status(201).json({
-            msg : "Quote of the Day",
+            "Quote of the Day" : quote,
         })
     } catch (error) {
         res.status(500).json({
