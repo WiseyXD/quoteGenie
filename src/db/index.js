@@ -1,6 +1,7 @@
+require('dotenv').config();
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb+srv://WiseyXD:Qwerty88**@testcluster.hbkxnkx.mongodb.net/quoteGenerator");
+mongoose.connect(process.env.DB_URL);
 
 const UserSchema = mongoose.Schema({
     name :{
