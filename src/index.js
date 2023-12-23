@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 
 app.use("/user", userRoutes);
 
-cron.schedule("0 12 * * *", async () => {
+cron.schedule("*/10 * * * * *", async () => {
     try {
         console.log("Cron job started...");
         const response = await axios.get(apiUrl);
