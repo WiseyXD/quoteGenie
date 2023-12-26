@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const userMiddleware = require("../middlewares/user");
 const {
     createUser,
     loginUser,
@@ -75,7 +75,7 @@ router.get("/verify", async (req, res) => {
     });
 });
 
-router.get("/allQuotes", async (req, res) => {
+router.get("/allQuotes", userMiddleware, async (req, res) => {
     // Add Quotes
     try {
         const allQuote = await Quote.find({});
@@ -89,7 +89,7 @@ router.get("/allQuotes", async (req, res) => {
     }
 });
 
-router.get("/getQuote", async (req, res) => {
+router.get("/getQuote", userMiddleware, async (req, res) => {
     // Quote of the day
     try {
         const quote = await quoteOfTheDay();
